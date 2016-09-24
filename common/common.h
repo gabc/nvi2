@@ -14,7 +14,7 @@
  * on most machines to which we're porting vi, and we want to include
  * them in a very specific order, regardless.
  */
-#include <db.h>
+#include "db.h"
 #include <regex.h>
 
 /*

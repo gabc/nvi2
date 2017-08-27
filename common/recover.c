@@ -370,7 +370,9 @@ rcv_mailfile(SCR *sp, int issync, char *cp_path)
 	 */
 	ep = sp->ep;
 	if (file_lock(sp, NULL, fd, 1) != LOCK_SUCCESS)
-		msgq(sp, M_SYSERR, "063|Unable to lock recovery file");
+		/* Since I don't want no lock. Please don't tell me when it fail. */
+		/* msgq(sp, M_SYSERR, "063|Unable to lock recovery file"); */
+		;
 	if (!issync) {
 		/* Save the recover file descriptor, and mail path. */
 		ep->rcv_fd = dup(fd);

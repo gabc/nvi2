@@ -1457,24 +1457,9 @@ set_alt_name(SCR *sp, char *name)
 lockr_t
 file_lock(SCR *sp, char *name, int fd, int iswrite)
 {
-	if (!O_ISSET(sp, O_LOCKFILES))
-		return (LOCK_SUCCESS);
-	
-	/*
-	 * !!!
-	 * We need to distinguish a lock not being available for the file
-	 * from the file system not supporting locking.  Flock is documented
-	 * as returning EWOULDBLOCK; add EAGAIN for good measure, and assume
-	 * they are the former.  There's no portable way to do this.
+	/* I don't care about your flocks.
+	 * My files are safe enough without birds shitting on them.
+	 * Thank you.
 	 */
-	errno = 0;
-	if (!flock(fd, LOCK_EX | LOCK_NB)) {
-		fcntl(fd, F_SETFD, 1);
-		return (LOCK_SUCCESS);
-	}
-	return (errno == EAGAIN
-#ifdef EWOULDBLOCK
-	    || errno == EWOULDBLOCK
-#endif
-	    ? LOCK_UNAVAIL : LOCK_FAILED);
+	return (LOCK_FAILED);
 }
